@@ -81,8 +81,8 @@ def main():
     df = fetch_data()
 
     # Debugging
-    #st.write("Columns in DataFrame:", df.columns)
-    #st.write("DataFrame Preview:", df.head())
+    st.write("Columns in DataFrame:", df.columns)
+    st.write("DataFrame Preview:", df.head())
 
     if username and password:
         expected_password = f"{username}_medibuddy"
@@ -94,15 +94,12 @@ def main():
                 df = df[df['entity id'] == int(username)]
 
                 if not df.empty:
-                    entity_ids = df['entity id'].unique()
-                    selected_entity = st.selectbox("Select entity id", entity_ids)
-
                     min_date = df['misdate'].min()
                     max_date = df['misdate'].max()
                     selected_date = st.date_input("Select Date Range", [min_date, max_date])
 
                     start_date, end_date = selected_date
-                    df_filtered = df[(df['entity id'] == selected_entity) & (df['misdate'] >= start_date) & (df['misdate'] <= end_date)]
+                    df_filtered = df[(df['misdate'] >= start_date) & (df['misdate'] <= end_date)]
 
                     order_count = df_filtered['order id'].nunique()
                     fig_order_count = go.Figure(go.Indicator(
@@ -144,4 +141,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
